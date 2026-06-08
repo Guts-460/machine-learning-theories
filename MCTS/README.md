@@ -21,7 +21,9 @@ Unlike classical minimax search, MCTS **does not require exhaustive expansion of
 
 Consider a Markov Decision Process (MDP):
 
-$(S, A, P, R)$
+$$
+(S, A, P, R)
+$$
 
 where:
 
@@ -46,12 +48,13 @@ and
 
 $$
 G_t = \sum_{k=0}^\infty \gamma^k r_{t+k}
+$$
 
 is the discounted return.
 
-In many practical problems, the exact computation of (Q(s,a)) is impossible because the state space grows exponentially.
+In many practical problems, the exact computation of $Q(s,a)$ is impossible because the state space grows exponentially.
 
-MCTS approximates (Q(s,a)) through repeated sampling.
+MCTS approximates $Q(s,a)$ through repeated sampling.
 
 ---
 
@@ -59,53 +62,47 @@ MCTS approximates (Q(s,a)) through repeated sampling.
 
 Each node represents a state:
 
-[
+$$
 v \leftrightarrow s
-]
+$$
 
-For every node (v), we store:
+For every node $v$, we store:
 
 ### Visit Count
 
-[
+$$
 N(v)
-]
+$$
 
-Number of times node (v) has been visited.
+Number of times node $v$ has been visited.
 
 ### Action Visit Count
 
-[
+$$
 N(v,a)
-]
+$$
 
-Number of times action (a) was chosen from node (v).
+Number of times action $a$ was chosen from node $v$.
 
 ### Total Reward
 
-[
+$$
 W(v)
-]
+$$
 
 Accumulated reward.
 
 ### Mean Value
 
-[
-Q(v)
-====
-
-\frac{W(v)}{N(v)}
-]
+$$
+Q(v) = \frac{W(v)}{N(v)}
+$$
 
 or
 
-[
-Q(v,a)
-======
-
-\frac{W(v,a)}{N(v,a)}
-]
+$$
+Q(v,a) = \frac{W(v,a)}{N(v,a)}
+$$
 
 which estimates the expected return.
 
