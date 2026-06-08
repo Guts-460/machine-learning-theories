@@ -129,23 +129,19 @@ The most important tree policy is **UCT (Upper Confidence Bound applied to Trees
 
 ## 5.1 Multi-Armed Bandit Background
 
-Suppose we have (K) slot machines.
+Suppose we have $K$ slot machines.
 
-Arm (i) has unknown mean reward:
+Arm $i$ has unknown mean reward:
 
-[
+$$
 \mu_i
-]
+$$
 
-After (n_i) pulls:
+After $n_i$ pulls:
 
-[
-\hat{\mu}_i
-===========
-
-\frac{1}{n_i}
-\sum_{j=1}^{n_i} r_j
-]
+$$
+\hat{\mu}_i = \frac{1}{n_i} \sum_{j=1}^{n_i} r_j
+$$
 
 The challenge is:
 
@@ -158,30 +154,23 @@ The challenge is:
 
 Auer et al. derived:
 
-[
-UCB_i
-=====
-
-\hat{\mu}_i
-+
-\sqrt{
-\frac{2\ln N}{n_i}
-}
-]
+$$
+UCB_i = \hat{\mu}_i + \sqrt{\frac{2\ln N}{n_i}}
+$$
 
 where:
 
-* (N): total pulls
-* (n_i): pulls of arm (i)
+* $N$: total pulls
+* $n_i$: pulls of arm $i$
 
 The second term is an uncertainty bonus.
 
-As (n_i) increases:
+As $n_i$ increases:
 
-[
+$$
 \sqrt{\frac{\ln N}{n_i}}
 \rightarrow 0
-]
+$$
 
 thus uncertainty gradually disappears.
 
@@ -191,36 +180,24 @@ thus uncertainty gradually disappears.
 
 Kocsis and Szepesvári extended UCB to tree search.
 
-For node (v):
+For node $v$:
 
-[
-UCT(v,a)
-========
-
-Q(v,a)
-+
-c
-\sqrt{
-\frac{\ln N(v)}
-{N(v,a)}
-}
-]
+$$
+UCT(v,a) = Q(v,a) + c\sqrt{\frac{\ln N(v)}{N(v,a)}}
+$$
 
 where:
 
-* (Q(v,a)): estimated value
-* (N(v)): parent visits
-* (N(v,a)): child visits
-* (c): exploration constant
+* $Q(v,a)$: estimated value
+* $N(v)$: parent visits
+* $N(v,a)$: child visits
+* $c)$: exploration constant
 
 Selection chooses:
 
-[
-a^*
-===
-
-\arg\max_a UCT(v,a)
-]
+$$
+a^* = \arg\max_a UCT(v,a)
+$$
 
 ---
 
@@ -228,30 +205,28 @@ a^*
 
 The first term:
 
-[
+$$
 Q(v,a)
-]
+$$
 
 favors actions with high observed reward.
 
 The second term:
 
-[
+$$
 c\sqrt{
 \frac{\ln N(v)}
 {N(v,a)}
 }
-]
+$$
 
 favors actions with insufficient sampling.
 
 Thus:
 
-[
-\text{Exploration}
-+
-\text{Exploitation}
-]
+$$
+\text{Exploration} + \text{Exploitation}
+$$
 
 are balanced automatically.
 
@@ -261,23 +236,23 @@ are balanced automatically.
 
 When selection reaches a node with unexpanded actions:
 
-[
+$$
 A_{untried}(v)\neq \emptyset
-]
+$$
 
 one action is chosen and a new child node is created.
 
 If
 
-[
+$$
 s' = T(s,a)
-]
+$$
 
 then
 
-[
+$$
 v' \leftrightarrow s'
-]
+$$
 
 is added to the tree.
 
@@ -287,38 +262,31 @@ is added to the tree.
 
 From the newly expanded node, a simulation is performed until termination.
 
-A rollout policy (\pi_r) generates actions:
+A rollout policy $\pi_r$ generates actions:
 
-[
+$$
 a_t \sim \pi_r(a|s_t)
-]
+$$
 
 Typically:
 
-[
-\pi_r(a|s)
-==========
-
-\text{Uniform}
-]
+$$
+\pi_r(a|s) = \text{Uniform}
+$$
 
 for pure MCTS.
 
 The resulting trajectory is
 
-[
+$$
 s_0,a_0,s_1,a_1,\dots,s_T
-]
+$$
 
 yielding return
 
-[
-G
-=
-
-\sum_{t=0}^{T}
-\gamma^t r_t
-]
+$$
+G = \sum_{t=0}^{T}\gamma^t r_t
+$$
 
 This provides a Monte Carlo estimate of the node value.
 
@@ -328,19 +296,19 @@ This provides a Monte Carlo estimate of the node value.
 
 By the Law of Large Numbers:
 
-[
+$$
 \frac{1}{M}
 \sum_{i=1}^{M}
 G_i
 \rightarrow
 \mathbb{E}[G]
-]
+$$
 
 as
 
-[
+$$
 M\rightarrow\infty
-]
+$$
 
 Therefore repeated rollouts converge to the true expected return.
 
@@ -348,35 +316,32 @@ Therefore repeated rollouts converge to the true expected return.
 
 # 9. Backpropagation
 
-After rollout reward (G) is obtained, all nodes along the selected path are updated.
+After rollout reward $G$ is obtained, all nodes along the selected path are updated.
 
-For each node (v):
+For each node $v$:
 
 ### Visit Count
 
-[
+$$
 N(v)
 \leftarrow
 N(v)+1
-]
+$$
 
 ### Total Reward
 
-[
+$$
 W(v)
 \leftarrow
 W(v)+G
-]
+$$
 
 ### Value Estimate
 
-[
-Q(v)
-====
-
-\frac{W(v)}
+$$
+Q(v) = \frac{W(v)}
 {N(v)}
-]
+$$
 
 This propagates information from leaf evaluations back toward the root.
 
@@ -386,25 +351,21 @@ This propagates information from leaf evaluations back toward the root.
 
 One of the most important theoretical results is:
 
-[
+$$
 Q(v,a)
 \rightarrow
 Q^*(v,a)
-]
+$$
 
 with probability 1 as the number of simulations approaches infinity.
 
 Under mild assumptions:
 
-[
-\lim_{n\to\infty}
-P(a_{MCTS}=a^*)
-===============
+$$
+\lim_{n\to\infty}P(a_{MCTS}=a^*) = 1
+$$
 
-1
-]
-
-Thus MCTS is **asymptotically optimal**.
+Thus MCTS is **asymptotically optimal**（渐进最优）.
 
 ---
 
@@ -412,34 +373,34 @@ Thus MCTS is **asymptotically optimal**.
 
 Suppose:
 
-* branching factor (b)
-* search depth (d)
+* branching factor $b$
+* search depth $d$
 
 Classical minimax requires:
 
-[
+$$
 O(b^d)
-]
+$$
 
 nodes.
 
 MCTS uses only:
 
-[
+$$
 O(T)
-]
+$$
 
 simulations,
 
-where (T) is chosen by the user.
+where $T$ is chosen by the user.
 
 The algorithm focuses computational effort on promising branches.
 
 This is why MCTS can handle games such as Go, whose search space is approximately:
 
-[
+$$
 10^{170}
-]
+$$
 
 far beyond exhaustive search.
 
@@ -449,27 +410,19 @@ far beyond exhaustive search.
 
 From a reinforcement learning perspective:
 
-[
-Q(s,a)
-======
-
-\mathbb{E}[G|s,a]
-]
+$$
+Q(s,a) = \mathbb{E}[G|s,a]
+$$
 
 MCTS approximates this expectation by:
 
-[
-Q_{MCTS}(s,a)
-=============
-
-\frac{1}{N(s,a)}
-\sum_{i=1}^{N(s,a)}
-G_i
-]
+$$
+Q_{MCTS}(s,a) = \frac{1}{N(s,a)}\sum_{i=1}^{N(s,a)}G_i
+$$
 
 which is simply a Monte Carlo estimator.
 
-Thus MCTS can be viewed as an adaptive sampling method for estimating action values.
+Thus MCTS can be viewed as an **adaptive sampling method** for estimating action values.
 
 ---
 
@@ -479,38 +432,30 @@ Modern variants replace random rollouts with neural networks.
 
 Instead of rollout evaluation:
 
-[
+$$
 V_\theta(s)
-]
+$$
 
 predicts state value.
 
 Instead of uniform exploration:
 
-[
+$$
 P_\theta(a|s)
-]
+$$
 
 provides prior probabilities.
 
 The selection rule becomes:
 
-[
-PUCT(s,a)
-=========
-
-Q(s,a)
-+
-c_{puct}
-P(s,a)
-\frac{\sqrt{N(s)}}
-{1+N(s,a)}
-]
+$$
+PUCT(s,a) = Q(s,a) + c_{puct}P(s,a)\frac{\sqrt{N(s)}}{1+N(s,a)}
+$$
 
 where:
 
-* (P(s,a)) comes from the policy network,
-* (Q(s,a)) comes from search statistics.
+* $P(s,a)$ comes from the policy network,
+* $Q(s,a)$ comes from search statistics.
 
 This dramatically improves search efficiency.
 
@@ -522,28 +467,26 @@ UCT can be interpreted as an approximate Bayesian optimization process.
 
 The exploitation term:
 
-[
+$$
 Q(v,a)
-]
+$$
 
 represents the posterior mean.
 
 The exploration bonus:
 
-[
+$$
 c
 \sqrt{\frac{\ln N(v)}{N(v,a)}}
-]
+$$
 
 represents uncertainty.
 
 Selection therefore approximates:
 
-[
-\text{Expected Reward}
-+
-\text{Uncertainty Bonus}
-]
+$$
+\text{Expected Reward} + \text{Uncertainty Bonus}
+$$
 
 which resembles an upper confidence bound on the true action value.
 
@@ -555,28 +498,17 @@ The mathematical essence of MCTS can be summarized as:
 
 1. **Monte Carlo estimation**
 
-[
-Q(s,a)
-======
-
-\mathbb{E}[G]
-]
+$$
+Q(s,a) = \mathbb{E}[G]
+$$
 
 estimated through random rollouts.
 
 2. **Bandit optimization**
 
-[
-UCT
-===
-
-Q
-+
-c
-\sqrt{
-\frac{\ln N}{n}
-}
-]
+$$
+UCT = Q + c\sqrt{\frac{\ln N}{n}}
+$$
 
 balances exploration and exploitation.
 
@@ -586,11 +518,9 @@ Promising branches receive exponentially more simulations.
 
 4. **Asymptotic convergence**
 
-[
-Q_{MCTS}
-\rightarrow
-Q^*
-]
+$$
+Q_{MCTS} \rightarrow Q^*
+$$
 
 and the probability of selecting the optimal action approaches 1 as the number of simulations increases.
 
