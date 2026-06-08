@@ -13,7 +13,7 @@ MCTS combines:
 2. **Monte Carlo Sampling** (randomized estimation of future outcomes)
 3. **Multi-Armed Bandit Theory** (balancing exploration and exploitation)
 
-Unlike classical minimax search, MCTS does not require exhaustive expansion of the game tree. Instead, it selectively expands promising regions while estimating node values through stochastic simulations.
+Unlike classical minimax search, MCTS **does not require exhaustive expansion of the game tree**. Instead, it selectively expands promising regions while estimating node values through stochastic simulations.
 
 ---
 
@@ -21,34 +21,33 @@ Unlike classical minimax search, MCTS does not require exhaustive expansion of t
 
 Consider a Markov Decision Process (MDP):
 
-[
-(\mathcal{S}, \mathcal{A}, P, R)
-]
+$$
+(S, A, P, R)
+$$
 
 where:
 
-* (s \in \mathcal{S}): state
-* (a \in \mathcal{A}): action
-* (P(s'|s,a)): transition probability
-* (R(s,a)): reward
+- $s \in S$: state
+- $a \in A$: action
+- $P(s' \mid s, a)$: transition probability
+- $R(s, a)$: reward
 
 The objective is to find:
 
-[
-a^*=\arg\max_a Q(s,a)
-]
+$$
+a^* = \arg \max_a Q(s, a)
+$$
 
 where
 
-[
-Q(s,a)=\mathbb{E}[G_t|s_t=s,a_t=a]
-]
+$$
+Q(s, a) = \mathbb{E}[G_t \mid s_t = s, a_t = a]
+$$
 
 and
 
-[
-G_t=\sum_{k=0}^{\infty}\gamma^k r_{t+k}
-]
+$$
+G_t = \sum_{k=0}^\infty \gamma^k r_{t+k}
 
 is the discounted return.
 
