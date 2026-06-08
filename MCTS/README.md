@@ -1,7 +1,9 @@
-# This is an explanation of the mathematical principles of Monte Carlo Tree Search (MCTS)
-
-
 # Monte Carlo Tree Search (MCTS): Mathematical Principles and Foundations
+Author: Yanbing Wen <br>
+Email: 1654162947@qq.com
+Publications: https://orcid.org/0009-0004-9663-512X
+
+---
 
 ## 1. Introduction
 
