@@ -21,9 +21,7 @@ Unlike classical minimax search, MCTS **does not require exhaustive expansion of
 
 Consider a Markov Decision Process (MDP):
 
-$$
-(S, A, P, R)
-$$
+$(S, A, P, R)$
 
 where:
 
