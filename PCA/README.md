@@ -325,45 +325,39 @@ Thus, earlier principal components contain more information than later ones.
 
 ## 12. Numerical Algorithm
 
-1. Center the data matrix:
+1. Center the data matrix.
 
-   $$
-   X \leftarrow X - \mathbf{1}\mu^\top
-   $$
+$$
+X_c = X - \mathbf{1}_n \mu^\top
+$$
 
-2. Compute the covariance matrix:
+where $\mu$ is the vector of feature means.
 
-   $$
-   \Sigma = \frac{1}{n}X^\top X
-   $$
+2. Compute the covariance matrix.
 
-3. Compute eigenvalues and eigenvectors of $\Sigma$
-   (or directly compute the SVD of $X$).
+$$
+\Sigma = \frac{1}{n} X_c^\top X_c
+$$
+
+3. Compute the eigenvalues and eigenvectors of $\Sigma$
+   (or directly compute the SVD of $X_c$).
 
 4. Sort eigenvectors according to decreasing eigenvalues.
 
-5. Construct
+5. Construct the projection matrix.
 
-   $$
-   W_d = [w_1,\ldots,w_d].
-   $$
+$$
+W_d =
+\left[
+w_1,\,
+w_2,\,
+\ldots,\,
+w_d
+\right]
+$$
 
-6. Obtain the reduced representation:
+6. Obtain the reduced representation.
 
-   $$
-   Z = XW_d.
-   $$
-
----
-
-## References
-
-1. Pearson, K. (1901). *On Lines and Planes of Closest Fit to Systems of Points in Space*. Philosophical Magazine.
-2. Hotelling, H. (1933). *Analysis of a Complex of Statistical Variables*. Journal of Educational Psychology.
-3. Jolliffe, I. T. (2002). *Principal Component Analysis*, 2nd Edition. Springer.
-4. Shlens, J. (2014). *A Tutorial on Principal Component Analysis*. arXiv:1404.1100.
-5. Trefethen, L. N., & Bau, D. (1997). *Numerical Linear Algebra*. SIAM.
-
----
-
-*Last updated: 2026-06-11*
+$$
+Z = X_c W_d
+$$
